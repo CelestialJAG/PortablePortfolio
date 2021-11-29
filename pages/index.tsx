@@ -1,15 +1,30 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import {
+  Link,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  Text,
+  Select,
+  Input,
+  Slide,
+  ScaleFade,
+  useToast,
+} from "@chakra-ui/react";
+import React from "react";
+import LandingPage from "./landingPage";
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const IndexPage = () => {
+  return (
+    <>
+      {/* Landing page */}
+      <LandingPage />
+      <Button>hello</Button>
+    </>
+  );
+};
 
-export default IndexPage
+export default IndexPage;
