@@ -42,7 +42,7 @@ const UserForm = () => {
     setShareable([
       ...shareable,
       type === "project" ? (
-        <FormControl id={"project" + projectCount++} mt={5}>
+        <FormControl mt={5}>
           <FormLabel>Project {projectCount}</FormLabel>
           <FormHelperText>Project name</FormHelperText>
           <Input
@@ -91,10 +91,8 @@ const UserForm = () => {
           validate={(values) => {
             const errors = {};
             if (!values.fullName) {
-              // FIXME:FIXME:FIXME:FIXME:
-              // Always use square bracket notation when adding properties to an object since dot notation will return 'undefined'
               // Look into https://dev.to/capscode/dot-and-bracket-notation-in-javascript-object-12ij
-              // FIXME:FIXME:FIXME:FIXME:
+
               errors.fullName = "Required";
             }
             if (!values.email) {
@@ -161,7 +159,7 @@ const UserForm = () => {
                       minH="48px"
                       onClick={() => {
                         addUserField("GitHub", values, handleChange);
-                        //setDispGithub("none");
+                        // setDispGithub("none");
                         console.log("added github!");
                       }}
                     >
@@ -173,6 +171,7 @@ const UserForm = () => {
                       />
                       <Text>GitHub</Text>
                     </MenuItem>
+
                     <MenuItem
                       // FIXME:FIXME:FIXME:FIXME:
                       //Refer to line 152–156
