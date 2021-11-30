@@ -78,14 +78,15 @@ const LandingPage = () => {
         )}
       </Formik>
     </Center>
-  ) : // <Flex bg="gray.700" p={5} w="100%" justifyContent="flex-end">
-  //   <Center>
-  //     {/* <Button> */}
+  ) :
+   <Flex bg="gray.700" p={5} w="100%" justifyContent="flex-end">
+    <Center>
+      {/* <Button> */}
 
-  //     <Link href="/api/auth/login">Click me</Link>
-  //     {/* </Button> */}
-  //   </Center>
-  // </Flex>
+      <Link href="/api/auth/login">Click me</Link>
+      {/* </Button> */}
+    </Center>
+  </Flex>
 
   null;
 };

@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import LandingPage from "./landingPage";
+import UserForm from "./userForm";
 
 const IndexPage = () => {
   return (
@@ -23,6 +24,7 @@ const IndexPage = () => {
       {/* Landing page */}
       <LandingPage />
       <Button>hello</Button>
+      <UserForm/>
     </>
   );
 };
