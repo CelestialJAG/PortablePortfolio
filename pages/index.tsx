@@ -25,7 +25,7 @@ const IndexPage = () => {
       <LandingPage />
       <Button>hello</Button>
       <UserForm />
-      <UserForm2 />
+      {/* <UserForm2 /> */}
     </>
   );
 };
