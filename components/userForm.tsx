@@ -15,54 +15,57 @@ import {
   Icon,
   useDisclosure,
   ScaleFade,
+  Textarea,
+  Heading,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { AiFillLinkedin, AiFillGithub, AiFillProject } from "react-icons/ai";
 import { Formik } from "formik";
 import { Form } from "formik";
-
+import ProfilePic from "./profileInput";
 const UserForm = () => {
-  const [inputForms, setInputForms] = useState([]); //array of strings (types)
-  const [menuItems, setMenuItems] = useState([ //array of strings (types)
+  const [inputForms, setInputForms] = useState<string[]>([]);
+  const [menuItems, setMenuItems] = useState<string[]>([
+    // array of strings is denoted with string[]
+    "Email",
     "LinkedIn",
     "GitHub",
     "Twitter",
     "Facebook",
-    "Resume",
-    "Project",
   ]);
-  const [projCount, setProjCount] = useState(0);
 
   return (
     <>
-      <Center flexDir="column">
+      <Center h="100vh" flexDir="column">
         <Formik
           initialValues={{
             fullName: "",
-            email: "",
-            linkedin: "",
-            github: "",
+            Email: "",
+            GitHub: "",
+            LinkedIn: "",
+            Twitter: "",
+            Facebook: "",
+            biography: "",
+            profilePic: null,
             projects: [],
             resume: null,
           }}
           validate={(values) => {
             const errors = {};
-            if (!values.fullName) {
-              // Look into https://dev.to/capscode/dot-and-bracket-notation-in-javascript-object-12ij
-              errors['fullName'] = "Required";
-            }
-            if (!values.email) {
-              errors['email'] = "Required";
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors['email'] = "Invalid email address";
-            }
-
+            // Look into https://dev.to/capscode/dot-and-bracket-notation-in-javascript-object-12ij
+            if (!values.fullName) errors["fullName"] = "Required field";
+            if (!values.biography) errors["biography"] = "Required field";
+            if (!values.Email) errors["email"] = "Required";
+            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.Email))
+              errors["Email"] = "Invalid email address";
+            // Use errors.Email and touched.Email in the code to render display the error message we want
             return errors;
           }}
           onSubmit={(val, { setSubmitting }) => {
-            setSubmitting(false);
+            // TODO:
+            // Send to DB on submission with confirmation (return toast())
+            // TODO:
+
             console.log(val);
           }}
         >
@@ -75,92 +78,86 @@ const UserForm = () => {
             handleSubmit,
             isSubmitting,
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "25rem",
+                padding: "1rem",
+                background: "#2D3748",
+                borderRadius: "1rem",
+              }}
+              onSubmit={handleSubmit}
+            >
               <FormControl id="name">
-                <FormLabel>Full Name</FormLabel>
+                <FormLabel display="flex" justifyContent="space-between">
+                  Full Name
+                  <Text color="red.500" mt={2}>
+                    {errors.fullName &&
+                      touched.fullName &&
+                      errors.fullName + "*"}
+                  </Text>
+                </FormLabel>
                 <Input
+                  _focus={{ bg: "white", color: "black" }}
+                  variant="filled"
                   type="text"
                   name="fullName"
                   onChange={handleChange}
                   value={values.fullName}
                 />
               </FormControl>
-
-              <FormControl id="email" mt={5}>
-                <FormLabel>Email address</FormLabel>
+              <FormControl mt={3} id="bio">
+                <FormLabel display="flex" justifyContent="space-between">
+                  Biography
+                  <Text color="red.500" mt={2}>
+                    {errors.biography &&
+                      touched.biography &&
+                      errors.biography + "*"}
+                  </Text>
+                </FormLabel>
                 <Input
-                  type="email"
-                  name="email"
+                  _focus={{ bg: "white", color: "black" }}
+                  variant="filled"
+                  as={Textarea}
+                  name="biography"
                   onChange={handleChange}
-                  value={values.email}
+                  value={values.biography}
                 />
-                <FormHelperText>We'll never share your email.</FormHelperText>
+                <FormHelperText>
+                  Give a brief introduction about yourself
+                </FormHelperText>
+              </FormControl>
+              <FormControl mt={5}>
+                <FormLabel fontSize="1.5rem">Resume</FormLabel>
+                <input type="file" name="resume" onChange={handleChange} />
               </FormControl>
 
-              {inputForms.map((component, i) => {
-                if(component==="Project"){ //project section
-                  setProjCount(projCount+1);
-                  return(
-                    <FormControl key={i} mt={5}>
-                      <FormLabel>Project {projCount}</FormLabel>
-                      <FormHelperText>Project name</FormHelperText>
-                      <Input
-                        type="text"
-                        name="project-name"
-                        onChange={handleChange}
-                        defaultValue={values[component]} //store name of project
-                      />
-                      <FormHelperText>Project description</FormHelperText>
-                      {/* <Input
-                        h={10}
-                        type="text"
-                        name="project-name"
-                        onChange={handleChange}
-                        defaultValue={values[component]} //store name of project
-                      /> */}
-                    </FormControl>
-                  );
-                }
-                else if(component==="Resume"){ //resume upload
-                  return(
-                    null
-                  );
-                }
-                else{ //social links
-                  return(
-                    <FormControl key={i} mt={5}>
-                      <FormLabel>{component}</FormLabel>
-                      <Input
-                        type="text"
-                        name={component}
-                        onChange={handleChange}
-                        defaultValue={values[component]}
-                      />
-                      <FormHelperText>Paste your {component} account link here.</FormHelperText>
-                    </FormControl>
-                  );
-                }
-              })}
+              <ProfilePic inputHandler={handleChange} />
 
-              <Flex mt={5}>
+              <Flex mt={10}>
                 <Menu>
-                  <MenuButton as={Button}>Add a new section</MenuButton>
+                  <MenuButton ml="auto" _focus={{}} as={Button}>
+                    Add more social links
+                  </MenuButton>
                   <MenuList>
-                    {menuItems.map((option, i)=>{
-                      return(
+                    {menuItems.map((option, i) => {
+                      return (
                         <MenuItem
                           key={i}
                           value={option}
                           minH="48px"
                           onClick={(e) => {
+                            values[e.currentTarget.value] = "";
+                            menuItems.splice(
+                              menuItems.indexOf(e.currentTarget.value),
+                              1
+                            ); //delete option from list
                             setInputForms([...inputForms, option]); //add specified text field
-                            (option!=="Project") && //project option doesnt get deleted
-                              menuItems.splice((menuItems.indexOf(e.currentTarget.value)), 1) //delete option from list
-                            console.log("added component!");
                           }}
                         >
                           <Icon
-                            as={AiFillGithub}
+                            as={AiFillGithub} //Dynamically get ICON
                             boxSize="2rem"
                             borderRadius="full"
                             mr="12px"
@@ -172,8 +169,20 @@ const UserForm = () => {
                   </MenuList>
                 </Menu>
               </Flex>
+              {inputForms.map((link, i) => (
+                <FormControl key={i} mt={5}>
+                  <FormLabel>{link}</FormLabel>
+                  <Input
+                    placeholder={link}
+                    type="text"
+                    value={values[link]}
+                    onChange={handleChange}
+                    name={link}
+                  />
+                </FormControl>
+              ))}
 
-              <Button type="submit" mt={5}>
+              <Button ml="auto" _focus={{}} type="submit" mt={5}>
                 Submit
               </Button>
             </Form>
