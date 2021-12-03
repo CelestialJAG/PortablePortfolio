@@ -1,25 +1,14 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Heading,
-  Input,
-  Link,
-} from "@chakra-ui/react";
-import { useUser } from "@auth0/nextjs-auth0";
-import React, { useState } from "react";
-import { Formik } from "formik";
-import UserForm from "../components/userForm";
-import Profile from "../components/profileInput";
+// import { Box, Link } from "@chakra-ui/react";
+// import React from "react";
+// import { withPageAuthRequired } from "@auth0/nextjs-auth0/dist/frontend";
 
-const LandingPage = () => {
-  const { user, error, isLoading } = useUser();
+// const LandingPage = withPageAuthRequired(() => {
+//   return (
+//     <>
+//       <Link href="/api/auth/logout">log me out</Link>
+//       <Box>ohya</Box>
+//     </>
+//   );
+// });
 
-  return user ? <UserForm /> : null;
-};
-
-export default LandingPage;
+// export default LandingPage;

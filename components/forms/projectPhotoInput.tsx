@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box, Flex, FormLabel, Image, Input } from "@chakra-ui/react";
-import photoUpload from "../helpers/photoUpload";
+import photoUpload from "../../helpers/photoUpload";
 
-export default function ProfilePic({ inputHandler }) {
+export default function ProjectPic({ project }) {
   const [dp, setdp] = useState({
     file: "",
     imagePreviewUrl:
@@ -11,7 +11,7 @@ export default function ProfilePic({ inputHandler }) {
   });
   return (
     <Flex flexDir="column" mt={10} textAlign="center">
-      <label htmlFor="photo-upload">
+      <label htmlFor="project-upload">
         <FormLabel fontSize="1.5rem" textAlign="left">
           Profile pic
         </FormLabel>
@@ -26,12 +26,23 @@ export default function ProfilePic({ inputHandler }) {
         />
         <input
           style={{ display: "none" }}
-          name="profilePic"
-          id="photo-upload"
+          name="projectPic"
+          id="project-upload"
           type="file"
           onChange={(e) => {
-            inputHandler(e);
-            photoUpload(e, setdp);
+            project["projectPic"] = e.currentTarget.value;
+            e.preventDefault();
+            const reader = new FileReader();
+            const file = e.target.files[0];
+            reader.onloadend = () => {
+              setdp({
+                //   @ts-expect-error
+                file,
+                //   @ts-expect-error
+                imagePreviewUrl: reader.result,
+              });
+            };
+            reader.readAsDataURL(file);
           }}
         />
       </label>

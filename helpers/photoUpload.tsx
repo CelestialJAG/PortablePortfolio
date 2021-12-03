@@ -1,5 +1,4 @@
 export default function photoUpload(event, setProfilePic) {
-  console.log(event.currentTarget.value);
   event.preventDefault();
   const reader = new FileReader();
   const file = event.target.files[0];

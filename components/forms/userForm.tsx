@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Flex,
@@ -13,17 +12,20 @@ import {
   MenuList,
   Text,
   Divider,
-  Icon,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ErrorMessage, Formik } from "formik";
 import { Form } from "formik";
 import ProfilePic from "./profileInput";
-import getSocialIcons from "../helpers/getSocialMediaIcon";
+import getSocialIcons from "../../helpers/getSocialMediaIcon";
 import { useUpdate } from "react-use";
 import DateInput from "./dateInput";
+import ProjectPic from "./projectPhotoInput";
+
 const UserForm = () => {
+  const toast = useToast();
   const forceUpdate = useUpdate();
   const [inputForms, setInputForms] = useState<string[]>([
     "LinkedIn",
@@ -35,7 +37,6 @@ const UserForm = () => {
     "Twitter",
     "Facebook",
   ]);
-  // const [projects, setProjects] = useState<object[]>([]);
 
   return (
     <>
@@ -104,12 +105,24 @@ const UserForm = () => {
             // Use errors.Email and touched.Email in the code to render display the error message we want
             return errors;
           }}
+          // @ts-expect-error
           onSubmit={(val, { setSubmitting }) => {
             // TODO:
             // Send to DB on submission with confirmation (return toast())
             // TODO:
-
-            console.log(val);
+            fetch("/api/mongo", {
+              method: "POST",
+              body: JSON.stringify({
+                data: val,
+              }),
+            });
+            return toast({
+              title: "Account created.",
+              description: "We've created a design for you!",
+              status: "success",
+              duration: 4500,
+              isClosable: true,
+            });
           }}
         >
           {({
@@ -131,11 +144,7 @@ const UserForm = () => {
                 background: "#2D3748",
                 borderRadius: "1rem",
               }}
-              onSubmit={(e) => {
-                console.log(errors);
-
-                handleSubmit(e);
-              }}
+              onSubmit={handleSubmit}
             >
               <FormControl isRequired id="name">
                 <FormLabel display="flex" justifyContent="space-between">
@@ -313,9 +322,8 @@ const UserForm = () => {
                     Created on
                   </FormLabel>
                   <DateInput currentProject={pro} />
-                  {/* TODO: */}
 
-                  {/* TODO: */}
+                  <ProjectPic project={pro} />
                 </FormControl>
               ))}
               {values.projects.length > 0 && (
