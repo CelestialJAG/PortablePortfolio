@@ -12,31 +12,34 @@ import {
   MenuItem,
   MenuList,
   Text,
+  Divider,
   Icon,
-  useDisclosure,
-  ScaleFade,
   Textarea,
-  Heading,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { AiFillLinkedin, AiFillGithub, AiFillProject } from "react-icons/ai";
-import { Formik } from "formik";
+import { ErrorMessage, Formik } from "formik";
 import { Form } from "formik";
 import ProfilePic from "./profileInput";
+import getSocialIcons from "../helpers/getSocialMediaIcon";
+import { useUpdate } from "react-use";
+import DateInput from "./dateInput";
 const UserForm = () => {
-  const [inputForms, setInputForms] = useState<string[]>([]);
+  const forceUpdate = useUpdate();
+  const [inputForms, setInputForms] = useState<string[]>([
+    "LinkedIn",
+    "GitHub",
+  ]);
   const [menuItems, setMenuItems] = useState<string[]>([
     // array of strings is denoted with string[]
     "Email",
-    "LinkedIn",
-    "GitHub",
     "Twitter",
     "Facebook",
   ]);
+  // const [projects, setProjects] = useState<object[]>([]);
 
   return (
     <>
-      <Center h="100vh" flexDir="column">
+      <Center flexDir="column">
         <Formik
           initialValues={{
             fullName: "",
@@ -52,12 +55,52 @@ const UserForm = () => {
           }}
           validate={(values) => {
             const errors = {};
+
             // Look into https://dev.to/capscode/dot-and-bracket-notation-in-javascript-object-12ij
             if (!values.fullName) errors["fullName"] = "Required field";
             if (!values.biography) errors["biography"] = "Required field";
-            if (!values.Email) errors["email"] = "Required";
-            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.Email))
+            if (
+              inputForms.indexOf("Email") !== -1 &&
+              values.Email &&
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.Email)
+            )
               errors["Email"] = "Invalid email address";
+            if (
+              inputForms.indexOf("LinkedIn") !== -1 &&
+              values.LinkedIn &&
+              !/^(ftp|http|https):\/\/[^ "]+$/.test(values.LinkedIn)
+            )
+              errors["LinkedIn"] = "Url must start with http/https";
+            if (
+              inputForms.indexOf("GitHub") !== -1 &&
+              values.GitHub &&
+              !/^(ftp|http|https):\/\/[^ "]+$/.test(values.GitHub)
+            )
+              errors["GitHub"] = "Url must start with http/https";
+            if (
+              inputForms.indexOf("Twitter") !== -1 &&
+              values.Twitter &&
+              !/^(ftp|http|https):\/\/[^ "]+$/.test(values.Twitter)
+            )
+              errors["Twitter"] = "Url must start with http/https";
+            if (
+              inputForms.indexOf("Facebook") !== -1 &&
+              values.Facebook &&
+              !/^(ftp|http|https):\/\/[^ "]+$/.test(values.Facebook)
+            )
+              errors["Facebook"] = "Url must start with http/https";
+
+            values.projects.forEach((el, i) => {
+              if (
+                !/^(ftp|http|https):\/\/[^ "]+$/.test(el.repoLink) ||
+                !/^(ftp|http|https):\/\/[^ "]+$/.test(el.projectLink)
+              )
+                errors["projects"] = {
+                  ...errors["projects"],
+                  [i]: "Url must start with http/https",
+                };
+            });
+
             // Use errors.Email and touched.Email in the code to render display the error message we want
             return errors;
           }}
@@ -80,6 +123,7 @@ const UserForm = () => {
           }) => (
             <Form
               style={{
+                overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
                 width: "25rem",
@@ -87,9 +131,13 @@ const UserForm = () => {
                 background: "#2D3748",
                 borderRadius: "1rem",
               }}
-              onSubmit={handleSubmit}
+              onSubmit={(e) => {
+                console.log(errors);
+
+                handleSubmit(e);
+              }}
             >
-              <FormControl id="name">
+              <FormControl isRequired id="name">
                 <FormLabel display="flex" justifyContent="space-between">
                   Full Name
                   <Text color="red.500" mt={2}>
@@ -107,7 +155,7 @@ const UserForm = () => {
                   value={values.fullName}
                 />
               </FormControl>
-              <FormControl mt={3} id="bio">
+              <FormControl isRequired mt={3} id="bio">
                 <FormLabel display="flex" justifyContent="space-between">
                   Biography
                   <Text color="red.500" mt={2}>
@@ -128,20 +176,19 @@ const UserForm = () => {
                   Give a brief introduction about yourself
                 </FormHelperText>
               </FormControl>
-              <FormControl mt={5}>
+              <FormControl isRequired mt={5}>
                 <FormLabel fontSize="1.5rem">Resume</FormLabel>
                 <input type="file" name="resume" onChange={handleChange} />
               </FormControl>
-
               <ProfilePic inputHandler={handleChange} />
-
-              <Flex mt={10}>
+              <Flex mt={5}>
                 <Menu>
-                  <MenuButton ml="auto" _focus={{}} as={Button}>
+                  <MenuButton m="0 auto" _focus={{}} as={Button}>
                     Add more social links
                   </MenuButton>
+
                   <MenuList>
-                    {menuItems.map((option, i) => {
+                    {menuItems.map((option: string, i) => {
                       return (
                         <MenuItem
                           key={i}
@@ -156,13 +203,10 @@ const UserForm = () => {
                             setInputForms([...inputForms, option]); //add specified text field
                           }}
                         >
-                          <Icon
-                            as={AiFillGithub} //Dynamically get ICON
-                            boxSize="2rem"
-                            borderRadius="full"
-                            mr="12px"
-                          />
-                          <Text>{option}</Text>
+                          {getSocialIcons(option)}
+                          <Text ml={1} fontSize="1.15rem">
+                            {option}
+                          </Text>
                         </MenuItem>
                       );
                     })}
@@ -170,18 +214,138 @@ const UserForm = () => {
                 </Menu>
               </Flex>
               {inputForms.map((link, i) => (
-                <FormControl key={i} mt={5}>
-                  <FormLabel>{link}</FormLabel>
-                  <Input
-                    placeholder={link}
-                    type="text"
-                    value={values[link]}
-                    onChange={handleChange}
-                    name={link}
-                  />
+                <FormControl isRequired key={i} mt={5}>
+                  <FormLabel display="flex" justifyContent="space-between">
+                    {link}
+
+                    <Text ml="auto" color="red.500">
+                      {errors[link] && touched[link] && errors[link]}
+                    </Text>
+                  </FormLabel>
+
+                  <Flex>
+                    <Input
+                      placeholder={link}
+                      type="text"
+                      value={values[link]}
+                      onChange={handleChange}
+                      name={link}
+                    />
+
+                    <Button
+                      bg="red.500"
+                      _hover={{ bg: "red.600" }}
+                      _focus={{}}
+                      _active={{ bg: "red.700" }}
+                      ml={3}
+                      borderRadius="50%"
+                      onClick={() => {
+                        inputForms.splice(inputForms.indexOf(link), 1);
+                        setMenuItems([...menuItems, link]);
+                      }}
+                    >
+                      -
+                    </Button>
+                  </Flex>
                 </FormControl>
               ))}
+              <Divider mt={5} mb={3} />
+              {/*  TODO:PROJECTS*/}
+              {values.projects.map((pro: object, i) => (
+                <FormControl isRequired key={i} mt={5}>
+                  <FormLabel fontSize="1.25rem">Project {i + 1}</FormLabel>
+                  <Input
+                    onChange={(e) => {
+                      pro["projectName"] = e.currentTarget.value;
+                    }}
+                    placeholder="Name of project"
+                  />
+                  <FormLabel htmlFor={`input-${i + 1}`} mt={3}>
+                    Brief description of the project{" "}
+                  </FormLabel>
+                  <Textarea
+                    onChange={(e) => {
+                      pro["projectDescription"] = e.currentTarget.value;
+                    }}
+                    id={`input-${i + 1}`}
+                    placeholder="Describe the project"
+                  />
 
+                  <FormLabel htmlFor={`projectlink-${i + 1}`} mt={3}>
+                    Project link
+                  </FormLabel>
+                  <Input
+                    id={`projectlink-${i + 1}`}
+                    placeholder="https://www.google.com/"
+                    onChange={(e) => {
+                      pro["projectLink"] = e.currentTarget.value;
+                      forceUpdate();
+                    }}
+                  />
+                  {pro["projectLink"] &&
+                    !/^(ftp|http|https):\/\/[^ "]+$/.test(
+                      pro["projectLink"]
+                    ) && (
+                      <Text color="red.500">
+                        Url must start with http/https
+                      </Text>
+                    )}
+                  {/* TODO: */}
+                  <FormLabel htmlFor={`repo-${i + 1}`} mt={3}>
+                    Git Repository
+                  </FormLabel>
+                  <Input
+                    id={`repo-${i + 1}`}
+                    placeholder="https://github.com/vercel/next.js"
+                    onChange={(e) => {
+                      forceUpdate();
+                      pro["repoLink"] = e.currentTarget.value;
+                    }}
+                  />
+                  {pro["repoLink"] &&
+                    !/^(ftp|http|https):\/\/[^ "]+$/.test(pro["repoLink"]) && (
+                      <Text color="red.500">
+                        Url must start with http/https
+                      </Text>
+                    )}
+
+                  <FormLabel htmlFor={`dateCreated-${i + 1}`} mt={3}>
+                    Created on
+                  </FormLabel>
+                  <DateInput currentProject={pro} />
+                  {/* TODO: */}
+
+                  {/* TODO: */}
+                </FormControl>
+              ))}
+              {values.projects.length > 0 && (
+                <Button
+                  bg="red.500"
+                  _hover={{ bg: "red.600" }}
+                  _active={{ bg: "red.700" }}
+                  _focus={{}}
+                  mt={3}
+                  onClick={() => {
+                    values.projects.pop();
+                    forceUpdate();
+                  }}
+                >
+                  Remove project
+                </Button>
+              )}
+              <Button
+                bg="blue.500"
+                _hover={{ bg: "blue.600" }}
+                _active={{ bg: "blue.700" }}
+                _focus={{}}
+                mt={2}
+                onClick={() => {
+                  values.projects.push({});
+                  forceUpdate();
+                }}
+              >
+                Add project
+              </Button>
               <Button ml="auto" _focus={{}} type="submit" mt={5}>
                 Submit
               </Button>
