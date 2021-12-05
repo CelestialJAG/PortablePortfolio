@@ -7,14 +7,18 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.5",
     "@auth0/auth0-react": "^1.8.0",
     "@auth0/nextjs-auth0": "^1.6.1",
     "@chakra-ui/react": "^1.7.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "apollo-server-micro": "^3.5.0",
     "auth0": "^2.37.0",
     "formik": "^2.2.9",
     "framer-motion": "^4",
+    "graphql": "^16.0.1",
+    "micro-cors": "^0.1.1",
     "mongodb": "^4.2.1",
     "next": "latest",
     "react": "^17.0.2",
