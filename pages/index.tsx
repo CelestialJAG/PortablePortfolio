@@ -21,10 +21,16 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0";
 import getUserId from "../helpers/getUserID";
 const IndexPage = (props) => {
+  const { user } = useUser();
+  console.log(user);
+
   return "error" in props ? (
     <Link href="/api/auth/login">log in</Link>
   ) : (
-    <Link href="/api/auth/logout">log out</Link>
+    <>
+      <Link href="/api/auth/logout">log out</Link>
+      <UserForm />
+    </>
   );
 };
 export const getServerSideProps = async (ctx) => {
