@@ -23,8 +23,9 @@ import getSocialIcons from "../../helpers/getSocialMediaIcon";
 import { useUpdate } from "react-use";
 import DateInput from "./dateInput";
 import ProjectPic from "./projectPhotoInput";
+import getUserId from "../../helpers/getUserID";
 
-const UserForm = () => {
+const UserForm = ({ user }) => {
   const toast = useToast();
   const forceUpdate = useUpdate();
   const [inputForms, setInputForms] = useState<string[]>([
@@ -113,9 +114,10 @@ const UserForm = () => {
             fetch("/api/mongo", {
               method: "POST",
               body: JSON.stringify({
-                data: val,
+                data: { ...val, userID: getUserId(user) },
               }),
             });
+
             return toast({
               title: "Account created.",
               description: "We've created a design for you!",
