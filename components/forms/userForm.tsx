@@ -111,13 +111,13 @@ const UserForm = ({ user }) => {
             // TODO:
             // Send to DB on submission with confirmation (return toast())
             // TODO:
-            fetch("/api/mongo", {
+            fetch("/api/graphql", {
               method: "POST",
               body: JSON.stringify({
                 data: { ...val, userID: getUserId(user) },
               }),
             });
-
+            console.log(val);
             return toast({
               title: "Account created.",
               description: "We've created a design for you!",
