@@ -27,4 +27,8 @@ export const typeDefs = gql`
   type Query {
     users: User!
   }
+
+  type Mutation {
+    createUser(data: User): User
+  }
 `;

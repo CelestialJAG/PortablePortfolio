@@ -15,6 +15,8 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { gql, useMutation } from "@apollo/client";
+import Link from "next/link";
 import React, { useState } from "react";
 import { ErrorMessage, Formik } from "formik";
 import { Form } from "formik";
@@ -26,6 +28,7 @@ import ProjectPic from "./projectPhotoInput";
 import getUserId from "../../helpers/getUserID";
 
 const UserForm = ({ user }) => {
+  const [showPageButton, setShowPageButton] = useState(false);
   const toast = useToast();
   const forceUpdate = useUpdate();
   const [inputForms, setInputForms] = useState<string[]>([
@@ -39,7 +42,7 @@ const UserForm = ({ user }) => {
     "Facebook",
   ]);
 
-  return (
+  return !showPageButton ? (
     <>
       <Center flexDir="column">
         <Formik
@@ -111,13 +114,27 @@ const UserForm = ({ user }) => {
             // TODO:
             // Send to DB on submission with confirmation (return toast())
             // TODO:
+
+            // const ADD_TODO = gql`
+            //   mutation AddTodo($data: String!) {
+            //     addTodo(data: $data) {
+            //       id
+            //       data
+            //     }
+            //   }
+            // `;
+            // const [addTodo, { data, loading, error }] = useMutation(ADD_TODO);
+            // addTodo({ variables: { data: val } });
+
             fetch("/api/graphql", {
               method: "POST",
               body: JSON.stringify({
                 data: { ...val, userID: getUserId(user) },
               }),
             });
-            console.log(val);
+            setTimeout(() => {
+              setShowPageButton(true);
+            }, 2000);
             return toast({
               title: "Account created.",
               description: "We've created a design for you!",
@@ -362,6 +379,13 @@ const UserForm = ({ user }) => {
             </Form>
           )}
         </Formik>
+      </Center>
+    </>
+  ) : (
+    <>
+      <Center h="100vh">
+        {" "}
+        <Link href={`/user/${getUserId(user)}`}>Show me my profile</Link>
       </Center>
     </>
   );
