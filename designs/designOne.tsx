@@ -140,7 +140,10 @@ const DesignOne = ({ user }: any) => {
           </Button> */}
         <BasicUsage resume={user.resume} />
         {/* </Link> */}
-        <Button mt="5rem">icon</Button>
+        <Box>
+          View projects
+          <Button mt="5rem">icon</Button>
+        </Box>
       </Center>
     </Center>
   );
