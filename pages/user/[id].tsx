@@ -17,6 +17,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     `http://localhost:3000/api/graphql?query=${id}`,
     { method: "GET" }
   );
-  const user = await response.json();
+  const { user } = await response.json();
   return { props: { user } };
 };
