@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Flex, FormLabel, Image, Input } from "@chakra-ui/react";
 import photoUpload from "../../helpers/photoUpload";
+import multer from "multer";
 
 export default function ProfilePic({ inputHandler }) {
   const [dp, setdp] = useState({
@@ -30,6 +31,19 @@ export default function ProfilePic({ inputHandler }) {
           id="photo-upload"
           type="file"
           onChange={(e) => {
+            const upload = multer({
+              dest: "images",
+            });
+            // console.log(URL.createObjectURL(e.target.files[0]));
+            // console.log(e.target.files);
+            // const form = new FormData();
+            // form.append("file", e.target.files[0]);
+            // console.log(form, "ohya");
+            // fetch("http://localhost:3000/api/graphql", {
+            //   method: "POST",
+            //   headers: { "Content-Type": "multipart/form-data" },
+            //   body: form,
+            // });
             inputHandler(e);
             photoUpload(e, setdp);
           }}

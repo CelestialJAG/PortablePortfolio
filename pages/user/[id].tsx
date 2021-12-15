@@ -2,7 +2,7 @@ import { Button, Center, Image } from "@chakra-ui/react";
 import { GetServerSidePropsContext, NextPageContext } from "next";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
-import DesignOne from "../../designs/designOne";
+import DesignOne from "../../designs/designOne/designOne";
 import { User } from "../../interfaces/types";
 
 const user = (props) => {

@@ -17,10 +17,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import MoonPic from "../attachments/moon.jpeg";
-import GalaxySpace from "../attachments/galaxySpace.jpeg";
-import Space from "../attachments/sky.jpeg";
-import { useColorMode } from "@chakra-ui/color-mode";
-import { User } from "../interfaces/types";
+import Space from "../../attachments/sky.jpeg";
 import { BsGithub, BsLinkedin, BsFacebook } from "react-icons/bs";
 import { AiOutlineTwitter } from "react-icons/ai";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -93,12 +90,14 @@ const DesignOne = ({ user }: any) => {
       />
       <Center w="50%" flexDir="column">
         {/* <Image src={user[0].name} w="40px" /> */}
-        (Image here)
+        {/* const source = pic.value?.replace("C:\\fakepath\\", ""); */}
+        {/* {console.log(user?.profilePic.replace("C:\\fakepath\\", ""))} */}
+        {/* <img  src={user?.profilePic.replace("C:\\fakepath\\", "")} /> */}
         <Heading fontSize="2.5rem" fontFamily="Arial" fontWeight="600">
           {user?.fullName}
         </Heading>
         <Center>
-          <Link href={user.LinkedIn}>
+          <Link href={user?.LinkedIn}>
             <IconButton
               m={2}
               borderRadius="50%"
@@ -106,7 +105,7 @@ const DesignOne = ({ user }: any) => {
               icon={<BsLinkedin color="#006DAC" />}
             />
           </Link>
-          <Link href={user.Facebook}>
+          <Link href={user?.Facebook}>
             <IconButton
               m={2}
               borderRadius="50%"
@@ -114,7 +113,7 @@ const DesignOne = ({ user }: any) => {
               icon={<BsFacebook color="blue" />}
             />
           </Link>
-          <Link href={user.GitHub}>
+          <Link href={user?.GitHub}>
             <IconButton
               m={2}
               borderRadius="50%"
@@ -122,7 +121,7 @@ const DesignOne = ({ user }: any) => {
               icon={<BsGithub />}
             />
           </Link>
-          <Link href={user.Twitter}>
+          <Link href={user?.Twitter}>
             <IconButton
               m={2}
               borderRadius="50%"
@@ -132,13 +131,13 @@ const DesignOne = ({ user }: any) => {
           </Link>
         </Center>
         <Text textAlign="center" mt="1.5rem" fontSize="1.25rem">
-          {user.biography}
+          {user?.biography}
         </Text>
         {/* <Link href="ohya"> */}
         {/* <Button p="1.75rem" mt="2rem" colorScheme="blue" fontSize="1.75rem">
             Resume
           </Button> */}
-        <BasicUsage resume={user.resume} />
+        <BasicUsage resume={user?.resume} />
         {/* </Link> */}
         <Box>
           View projects

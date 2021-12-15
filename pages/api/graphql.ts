@@ -8,7 +8,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const users = db.collection("users");
 
   if (req.method === "POST") {
-    const { data } = JSON.parse(req.body);
+    const data = req.body;
+    // users.insertOne(data);
+    // const { data } = JSON.parse(req.body);
     users.insertOne(data);
   }
   if (req.method === "GET") {
@@ -16,5 +18,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const user = await users.findOne({ userID: query });
     res.status(200).json({ user });
   }
+};
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "99999mb",
+    },
+  },
 };
 export default handler;
