@@ -14,6 +14,7 @@ import {
   Divider,
   Textarea,
   useToast,
+  useColorMode,
 } from "@chakra-ui/react";
 import { gql, useMutation } from "@apollo/client";
 import Link from "next/link";
@@ -35,6 +36,8 @@ const UserForm = ({ user }) => {
     "LinkedIn",
     "GitHub",
   ]);
+  const { toggleColorMode } = useColorMode();
+
   const [menuItems, setMenuItems] = useState<string[]>([
     // array of strings is denoted with string[]
     "Email",
@@ -44,7 +47,11 @@ const UserForm = ({ user }) => {
 
   return !showPageButton ? (
     <>
+      <Button></Button>
       <Center flexDir="column">
+        {/* <Button onClick={}></Button> */}
+
+        {/* <Button onClick={toggleColorMode}>here</Button> */}
         <Formik
           initialValues={{
             fullName: "",

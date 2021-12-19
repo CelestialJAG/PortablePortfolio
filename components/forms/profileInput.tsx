@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Flex, FormLabel, Image, Input } from "@chakra-ui/react";
 import photoUpload from "../../helpers/photoUpload";
-import multer from "multer";
 
 export default function ProfilePic({ inputHandler }) {
   const [dp, setdp] = useState({
@@ -10,6 +9,7 @@ export default function ProfilePic({ inputHandler }) {
       "https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true",
     active: "edit",
   });
+  console.log('hi');
   return (
     <Flex flexDir="column" mt={10} textAlign="center">
       <label htmlFor="photo-upload">
@@ -31,10 +31,7 @@ export default function ProfilePic({ inputHandler }) {
           id="photo-upload"
           type="file"
           onChange={(e) => {
-            const upload = multer({
-              dest: "images",
-            });
-            // console.log(URL.createObjectURL(e.target.files[0]));
+            // console.log(URL.createObjectUReL(e.target.files[0]));
             // console.log(e.target.files);
             // const form = new FormData();
             // form.append("file", e.target.files[0]);

@@ -1,6 +1,5 @@
-import { Button, Center, Image } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { GetServerSidePropsContext, NextPageContext } from "next";
-import { useRouter } from "next/dist/client/router";
 import React from "react";
 import DesignOne from "../../designs/designOne/designOne";
 import { User } from "../../interfaces/types";
@@ -10,7 +9,7 @@ const user = (props) => {
   return <DesignOne user={user} />;
 };
 export default user;
-
+<Button> </Button>;
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { id } = ctx.params;
   const response = await fetch(
