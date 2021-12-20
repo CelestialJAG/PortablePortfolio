@@ -26,7 +26,6 @@ import getSocialIcons from "../../helpers/getSocialMediaIcon";
 import { useUpdate } from "react-use";
 import DateInput from "./dateInput";
 import ProjectPic from "./projectPhotoInput";
-import getUserId from "../../helpers/getUserID";
 
 const UserForm = ({ user }) => {
   const [showPageButton, setShowPageButton] = useState(false);
@@ -47,7 +46,7 @@ const UserForm = ({ user }) => {
 
   return !showPageButton ? (
     <>
-      <Button></Button>
+      <Link href="api/auth/login">login</Link>
       <Center flexDir="column">
         {/* <Button onClick={}></Button> */}
 
@@ -116,39 +115,38 @@ const UserForm = ({ user }) => {
             // Use errors.Email and touched.Email in the code to render display the error message we want
             return errors;
           }}
-          // @ts-expect-error
-          onSubmit={(val, { setSubmitting }) => {
-            // TODO:
-            // Send to DB on submission with confirmation (return toast())
-            // TODO:
-
-            // const ADD_TODO = gql`
-            //   mutation AddTodo($data: String!) {
-            //     addTodo(data: $data) {
-            //       id
-            //       data
-            //     }
-            //   }
-            // `;
-            // const [addTodo, { data, loading, error }] = useMutation(ADD_TODO);
-            // addTodo({ variables: { data: val } });
+          onSubmit={(val) => {
+            // fetch("https://imgbb.com/json", {
+            //   method: "POST",
+            //   mode: "no-cors",
+            //   body: JSON.stringify({
+            //     image: {
+            //       filename: val.profilePic,
+            //     },
+            //   }),
+            // }).then(async (res) => {
+            //   const data = await res.type;
+            //   console.log(data);
+            // });
 
             fetch("/api/graphql", {
               method: "POST",
               body: JSON.stringify({
-                data: { ...val, userID: getUserId(user) },
+                data: { ...val, userID: user },
               }),
             });
-            setTimeout(() => {
-              setShowPageButton(true);
-            }, 2000);
-            return toast({
-              title: "Account created.",
-              description: "We've created a design for you!",
-              status: "success",
-              duration: 4500,
-              isClosable: true,
-            });
+
+            //
+            // setTimeout(() => {
+            //   setShowPageButton(true);
+            // }, 2000);
+            // return toast({
+            //   title: "Account created.",
+            //   description: "We've created a design for you!",
+            //   status: "success",
+            //   duration: 4500,
+            //   isClosable: true,
+            // });
           }}
         >
           {({
@@ -392,7 +390,7 @@ const UserForm = ({ user }) => {
     <>
       <Center h="100vh">
         {" "}
-        <Link href={`/user/${getUserId(user)}`}>Show me my profile</Link>
+        <Link href={`/user/${user}`}>Show me my profile</Link>
       </Center>
     </>
   );

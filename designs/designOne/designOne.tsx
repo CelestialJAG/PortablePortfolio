@@ -24,55 +24,55 @@ import { FaFacebookSquare } from "react-icons/fa";
 import Link from "next/link";
 import { Document, Page } from "react-pdf";
 
-function BasicUsage({ resume }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+// function BasicUsage({ resume }) {
+//   const { isOpen, onOpen, onClose } = useDisclosure();
+//   const [numPages, setNumPages] = useState(null);
+//   const [pageNumber, setPageNumber] = useState(1);
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
+//   function onDocumentLoadSuccess({ numPages }) {
+//     setNumPages(numPages);
+//   }
 
-  return (
-    // <>
-    // <>
+//   return (
+//     // <>
+//     // <>
 
-    //   <Modal isOpen={isOpen} onClose={onClose}>
-    //     <ModalOverlay />
-    //     <ModalContent>
-    //       <ModalHeader>Modal Title</ModalHeader>
-    //       <ModalCloseButton />
-    //       <ModalBody>
-    //         <Heading>ohya</Heading>
-    //       </ModalBody>
+//     //   <Modal isOpen={isOpen} onClose={onClose}>
+//     //     <ModalOverlay />
+//     //     <ModalContent>
+//     //       <ModalHeader>Modal Title</ModalHeader>
+//     //       <ModalCloseButton />
+//     //       <ModalBody>
+//     //         <Heading>ohya</Heading>
+//     //       </ModalBody>
 
-    //       <ModalFooter>
-    //         <Button colorScheme="blue" mr={3} onClick={onClose}>
-    //           Close
-    //         </Button>
-    //         <Button variant="ghost">Secondary Action</Button>
-    //       </ModalFooter>
-    //     </ModalContent>
-    //   </Modal>
-    // </>
-    <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent bg="red">
-          <ModalBody bg="red">
-            <Heading>ohya</Heading>
-            {/*  */}
-            <Document file={resume} onLoadSuccess={onDocumentLoadSuccess}>
-              {/* <Page pageNumber={pageNumber} /> */}
-            </Document>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
-    // </>
-  );
-}
+//     //       <ModalFooter>
+//     //         <Button colorScheme="blue" mr={3} onClick={onClose}>
+//     //           Close
+//     //         </Button>
+//     //         <Button variant="ghost">Secondary Action</Button>
+//     //       </ModalFooter>
+//     //     </ModalContent>
+//     //   </Modal>
+//     // </>
+//     <>
+//       <Button onClick={onOpen}>Open Modal</Button>
+//       <Modal isOpen={isOpen} onClose={onClose}>
+//         <ModalOverlay />
+//         <ModalContent bg="red">
+//           <ModalBody bg="red">
+//             <Heading>ohya</Heading>
+//             {/*  */}
+//             <Document file={resume} onLoadSuccess={onDocumentLoadSuccess}>
+//               {/* <Page pageNumber={pageNumber} /> */}
+//             </Document>
+//           </ModalBody>
+//         </ModalContent>
+//       </Modal>
+//     </>
+//     // </>
+//   );
+// }
 
 const DesignOne = ({ user }: any) => {
   console.log(user);
@@ -137,7 +137,7 @@ const DesignOne = ({ user }: any) => {
         {/* <Button p="1.75rem" mt="2rem" colorScheme="blue" fontSize="1.75rem">
             Resume
           </Button> */}
-        <BasicUsage resume={user?.resume} />
+        {/* <BasicUsage resume={user?.resume} /> */}
         {/* </Link> */}
         <Box>
           View projects

@@ -9,7 +9,6 @@ export default function ProfilePic({ inputHandler }) {
       "https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true",
     active: "edit",
   });
-  console.log('hi');
   return (
     <Flex flexDir="column" mt={10} textAlign="center">
       <label htmlFor="photo-upload">
